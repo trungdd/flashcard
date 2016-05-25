@@ -1,0 +1,135 @@
+
+<html>
+	
+	<head>
+		<meta http-equiv="Content-Type" charset="utf-8">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+		<script>
+		
+var flashcard = (
+	function () {
+	var kana = 
+	[
+		['a', 'i', 'u', 'e', 'o',
+		'ka', 'ki', 'ku', 'ke', 'ko',
+		'sa', 'shi', 'su', 'se', 'so',
+		'ta', 'chi', 'tsu', 'te', 'to',
+		'na', 'ni', 'nu', 'ne', 'no',
+		'ha', 'hi', 'fu', 'he', 'ho',
+		'ma', 'mi', 'mu', 'me', 'mo',
+		'ya', 'yu', 'yo',
+		'ra', 'ri', 'ru', 're', 'ro',
+		'wa', 'wo', 'n']
+	,
+		['あ','い','う','え','お',
+		'か','き','く','け','こ',
+		'さ','し','す','せ','そ',
+		'た','ち','つ','て','と',
+		'な','に','ぬ','ね','の',
+		'は','ひ','ふ','へ','ほ',
+		'ま','み','む','め','も',
+		'や','ゆ','よ',
+		'ら','り','る','れ','ろ',
+		'わ','を','ん']
+	,
+		['ア','イ','ウ','エ','オ',
+		'カ','キ','ク','ケ','コ',
+		'サ','シ','ス','セ','ソ',
+		'タ','チ','ツ','テ','ト',
+		'ナ','ニ','ヌ','ネ','ノ',
+		'ハ','ヒ','フ','ヘ','ホ',
+		'マ','ミ','ム','メ','モ',
+		'ヤ','ユ','ヨ',
+		'ラ','リ','ル','レ','ロ',
+		'ワ','ヲ','ン']
+	];
+	
+	var kanjiWord = 
+	[
+		['Nhất', 'Nhị', 'Tam', 'Tứ', 'Ngũ', 'Lục', 'Thất', 'Bát', 'Cửu', 'Thập',
+			'Nhân', 'Danh', 'Phương', 'Bản', 'Nhật', 'Hà', 'Đại', 'Học',
+			'Xã', 'Viên', 'Hội', 'Tiền', 'Sinh', 'Hành', 'Lai', 'Xa',
+			'Bách','Thiên','Vạn','Viên','Mỗi','Thời','Phân','Bán' ],
+		['一','二','三','四','五','六','七','八','九','十',
+			'人','名','方','本','日','何','大','学',
+			'社','員','会','先','生','行','来','車',
+			'百','千','万','円','毎','時','分','半']	
+	];
+	
+	var randomN = 0;
+	var type = 0;
+	var array = kanjiWord;
+	
+	return { 
+			random: function(){
+						randomN = Math.floor(((Math.random() + Math.random()) * 100)%array[0].length);
+						type = Math.floor((Math.random() * 10) % array.length);
+						var r = array[type][randomN];
+						console.log(r);
+						return r;
+					},
+			resolve: function(){	
+						var r = array[(type+1)% array.length][randomN];
+						console.log(r);
+						if (array.length > 2)
+						{
+							var r2 = array[(type+2)% array.length][randomN];
+							console.log(r2);
+							r = r + ',' + r2;
+						}
+						return r;
+					},
+			changeKanji: function (){
+						console.log("Change to kanji")
+						array = kanjiWord;
+					},
+			changeKana: function (){
+						console.log("Change to kana")
+						array = kana;
+					}
+			}
+	})();
+	
+		var btnRandom = function () {
+			$("#div1").html(flashcard.random());
+			$("#div2").html("");
+		};
+		var btnResolve = function () {
+			$("#div2").html(flashcard.resolve());
+		};
+	
+		$(document).ready(function () {
+			$("#btnRandom").on('click', btnRandom);
+			$("#btnResolve").on('click', btnResolve);
+			$("#btnKanji").on('click', flashcard.changeKanji);
+			$("#btnKana").on('click', flashcard.changeKana);
+		});
+		
+		$(document).bind('keypress', function(e) {
+			if(e.keyCode==13){
+				btnRandom();
+			} 
+			else if (e.keyCode == 32) {
+				btnResolve();
+			}
+		});
+	
+	</script>
+	</head>
+	<body>
+		
+		<div style="width:850px; height:520px;background-color:Gray;margin:auto;"> 
+			<div id="div1" style="width:600px; height:150px; line-height:150px; margin:auto; font-size:100px; text-align:center; background-color:rgb(0, 208, 255)"></div>
+			<div id="div2"" style="width:600px; height:150px; line-height:150px; margin:auto; margin-top:30px; font-size:100px; text-align:center; background-color:rgb(0, 208, 255)"></div>
+			<div style="width:600px; height:100px; margin:auto; margin-top:30px; font-size:100px; text-align:center;">
+				<div id="btnRandom" style="width:290px; height:100px; line-height:100px; float:left; font-size:50px; text-align:center; background-color:rgb(0, 208, 255); cursor:pointer;">Random</div>
+				<div id="btnResolve" style="width:290px; height:100px; line-height:100px; float:right; font-size:50px; text-align:center; background-color:rgb(0, 208, 255); cursor:pointer">Resolve</div>
+			</div>
+			<div id="btnKanji" style="width:80px; height:30px; line-height:30px; float:left; margin:10 0 0 10; text-align:center; background-color:rgb(0, 208, 255); cursor:pointer;">Kanji</div>
+			<div id="btnKana" style="width:80px; height:30px; line-height:30px; float:left; margin:10 0 0 10; text-align:center; background-color:rgb(0, 208, 255); cursor:pointer;">Kana</div>
+		</div>
+		
+	</body>
+</html>
+
+
